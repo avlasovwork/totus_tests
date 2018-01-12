@@ -1,13 +1,10 @@
-#cs
-Далее всё с правами администратора, ориентацыя по окну, лог.
-#ce
+;~ Далее всё с правами администратора, ориентацыя по окну, лог.
 #RequireAdmin
 #include <File.au3>
 AutoItSetOption('mousecoordmode',0)
 
-#cs
-Процедура авторизации усовершенствованная.
-#ce
+;~ Процедура авторизации усовершенствованная.
+
 Local $Way = '\Лог выполнения теста\Тест рандомного товара банк.log'
 
 Run('C:\TOTUS_FRONT\bin\Totus_Front.exe')
@@ -26,9 +23,7 @@ Send('{down 4}')
 send('{enter}')
 _FileWriteLog(@ScriptDir & $Way, 'Вход в программу под логином '  & $Login & ' и паролем ' & $Pass)
 
-#cs
-Процедура подключения к КА с  отработкой ошибок и исключений
-#ce
+;~ Процедура подключения к КА с  отработкой ошибок и исключений
 
 WinWaitActive('ПО ТОТУС-ФРОНТ','',5)
 ControlSend("ПО ТОТУС-ФРОНТ", "", "[CLASS:WindowsForms10.MDICLIENT.app.0.378734a; INSTANCE:1]", "^{c}")
@@ -98,9 +93,7 @@ _FileWriteLog(@ScriptDir & $Way,"Критическая ошибка не уда
 Exit
 EndIf
 
-#cs
-добавление рандомного  товара
-#ce
+;~ добавление рандомного  товара
 
 WinWaitActive('ЦО Тест')
 WinActivate('ЦО Тест')
@@ -234,9 +227,7 @@ _FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось Доб
 Exit
 EndIf
 
-#cs
-отработка кнопки промо
-#ce
+;~ отработка кнопки промо
 
 WinWaitActive('ЦО Тест')
 WinActivate('ЦО Тест')
@@ -245,17 +236,10 @@ Sleep(1000)
 
 _FileWriteLog(@ScriptDir & $Way, 'Отработана кнопка промо')
 
-#cs
-Пробитие чека. Банк.
-#ce
+;~ Пробитие чека. Банк.
 
 WinActivate('ЦО Тест')
 Send('{esc}')
-
-#cs
-MouseClick('primary',318,54,1,1)
-#ce
-
 WinWaitActive('Оплата по чеку', '', 10)
 if WinActive ('Оплата по чеку') == 0 Then
 WinClose('ПО ТОТУС-ФРОНТ')
@@ -278,13 +262,10 @@ EndIf
 
 _FileWriteLog(@ScriptDir & $Way, 'Чек пробит по банковской карте')
 
-#cs
-Закрытие окна чека
-#ce
+;~ Закрытие окна чека
 
 Sleep(500)
 Send('{f10}')
-
 WinWaitActive('Чек', '', 10)
 if WinActive ('Чек') == 0 Then
 WinClose('ПО ТОТУС-ФРОНТ')
@@ -292,10 +273,8 @@ _FileWriteLog(@ScriptDir & $Way, 'Ошибка, Закрыть форму чек
 Exit
 	EndIf
 WinActivate('Чек')
-
 Send('{enter}')
 Sleep(500)
-
 if WinActive ('ЦО Тест') == 1 Then
 WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, Закрыть форму чек. Тест завершился ошибкой')
@@ -304,9 +283,7 @@ EndIf
 
 _FileWriteLog(@ScriptDir & $Way, 'Закрыта форма чек')
 
-#cs
-Открытие чека возврата, последнего пробитого.
-#ce
+;~ Открытие чека возврата, последнего пробитого.
 
 WinWaitActive('ПО ТОТУС-ФРОНТ')
 WinActivate('ПО ТОТУС-ФРОНТ')
@@ -340,9 +317,7 @@ EndIf
 
 _FileWriteLog(@ScriptDir & $Way, 'Возврат. Открыт последний пробитый чек')
 
-#cs
-Пробитие чека возврата.
-#ce
+;~ Пробитие чека возврата.
 
 WinWaitActive('ЦО Тест', '', 10)
 if WinActive ('ЦО Тест') == 0 Then
@@ -385,9 +360,7 @@ EndIf
 
 _FileWriteLog(@ScriptDir & $Way, 'Возврат. Пробит последний пробитый чек')
 
-#cs
-Закрытие программы.
-#ce
+;~ Закрытие программы.
 
 WinClose('ПО ТОТУС-ФРОНТ')
 
