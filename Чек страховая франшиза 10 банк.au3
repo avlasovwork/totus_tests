@@ -6,7 +6,7 @@ AutoItSetOption('mousecoordmode',0)
 
 ;~ Процедура авторизации усовершенствованная.
 
-Local $Way = '\Лог выполнения теста\Чек страховая франшиза 10 банк.log'
+Local $Way = '\Лог выполнения теста\Чек банк страховая франшиза 10.log'
 
 Run('C:\TOTUS_FRONT\bin\Totus_Front.exe')
 _FileWriteLog(@ScriptDir & $Way, 'Старт программы')
@@ -192,9 +192,9 @@ Exit
 	EndIf
 WinActivate('Дробное количество')
 
-Send(2)
+Send(0)
 Send('{tab}')
-Send(3)
+Send(1)
 send('{enter}')
 Sleep(500)
 

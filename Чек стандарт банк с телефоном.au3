@@ -194,9 +194,9 @@ Exit
 	EndIf
 WinActivate('Дробное количество')
 
-Send(2)
+Send(0)
 Send('{tab}')
-Send(3)
+Send(1)
 send('{enter}')
 Sleep(500)
 

@@ -3,8 +3,8 @@
 #include <File.au3>
 AutoItSetOption('mousecoordmode',0)
 
-;~ Процедура авторизации усовершенствованная.
-Local $Way = '\Лог выполнения теста\Чек стандарт наличка c дисконтом.log'
+;~ Процедура авторизации усовершенствованная
+Local $Way = '\Лог выполнения теста\Чек доставка ТТ наличка c дисконтом снятие.log'
 
 Run('C:\TOTUS_FRONT\bin\Totus_Front.exe')
 _FileWriteLog(@ScriptDir & $Way, 'Старт программы')
@@ -172,40 +172,6 @@ Exit
 	EndIf
 _FileWriteLog(@ScriptDir & $Way, 'Добавлен товар в чек. Клавиатура')
 
-;~ добавление товара 3 просто товар клавиатура
-
-WinWaitActive('ЦО Тест')
-WinActivate('ЦО Тест')
-Send('{INS}')
-Send('Фармацитрон')
-Sleep(300)
-send('{enter}')
-Sleep(2000)
-send('{enter}')
-
-WinWaitActive('Дробное количество', '', 10)
-if WinActive ('Дробное количество') == 0 Then
-WinClose('ПО ТОТУС-ФРОНТ')
-_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось найти товар. Тест завершился ошибкой')
-Exit
-	EndIf
-WinActivate('Дробное количество')
-
-Send(0)
-Send('{tab}')
-Send(1)
-send('{enter}')
-Sleep(500)
-
-WinActivate('ЦО Тест')
-if WinActive ('Дробное количество') == 1 Then
-WinClose('ПО ТОТУС-ФРОНТ')
-_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось Добавить товар в чек. Тест завершился ошибкой')
-Exit
-EndIf
-
-_FileWriteLog(@ScriptDir & $Way, 'Добавлен товар в чек. Дробное количество')
-
 ;~ добавление товара 4 с маской _
 
 WinWaitActive('ЦО Тест')
@@ -234,38 +200,32 @@ WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось Добавить товар в чек. Тест завершился ошибкой')
 Exit
 EndIf
-
 _FileWriteLog(@ScriptDir & $Way, 'Добавлен товар в чек. Поиск по маске')
 
-;~ добавление товара 5 просто товар мышь
+;~ списание бонусов.
 
 WinWaitActive('ЦО Тест')
 WinActivate('ЦО Тест')
-MouseClick('primary',75,190,1,1)
-Send('Торсид 5мг ')
-Sleep(300)
-MouseClick('primary',1243,190,1,1)
-Sleep(2000)
-MouseClick('primary',65,290,2,1)
+MouseClick('primary',1574,835,1,1)
+Sleep(1000)
+MouseClick('primary',1670,194,2,1)
+Sleep(1000)
+Send(100)
+send('{enter}')
+Sleep(3000)
 
-WinWaitActive('Дробное количество', '', 10)
-if WinActive ('Дробное количество') == 0 Then
+if WinActive('Ошибка') == 1 Then
 WinClose('ПО ТОТУС-ФРОНТ')
-_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось найти товар. Тест завершился ошибкой')
-Exit
-	EndIf
-WinActivate('Дробное количество')
-
-MouseClick('primary',191,326,1,1)
-Sleep(500)
-
-WinActivate('ЦО Тест')
-if WinActive ('Дробное количество') == 1 Then
-WinClose('ПО ТОТУС-ФРОНТ')
-_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось Добавить товар в чек. Тест завершился ошибкой')
+_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось списать бонусы. Тест завершился ошибкой')
 Exit
 EndIf
-_FileWriteLog(@ScriptDir & $Way, 'Добавлен товар в чек. Мышь')
+if WinActive('','Сумма списания бонусов не может быть больше суммы розничной')== 1 Then
+WinClose('ПО ТОТУС-ФРОНТ')
+_FileWriteLog(@ScriptDir & $Way, 'Ошибка, сумма списания бонусов больше суммы розничной. Тест завершился ошибкой')
+Exit
+EndIf
+_FileWriteLog(@ScriptDir & $Way, 'Списано 200 бонусов')
+
 
 ;~ отработка кнопки промо
 
@@ -273,8 +233,90 @@ WinWaitActive('ЦО Тест')
 WinActivate('ЦО Тест')
 MouseClick('primary',1574,835,1,1)
 Sleep(1000)
-
 _FileWriteLog(@ScriptDir & $Way, 'Отработана кнопка промо')
+
+;~ Меняем тип чека на доставка ТТ
+
+Send('{F2}')
+WinWaitActive('Тип чеков', '', 10)
+if WinActive ('Тип чеков') == 0 Then
+WinClose('ПО ТОТУС-ФРОНТ')
+_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось найти товар. Тест завершился ошибкой')
+Exit
+	EndIf
+WinActivate('Тип чеков')
+send('{down 4}')
+send('{enter}')
+WinActivate('ЦО Тест')
+if WinActive ('Тип чеков') == 1 Then
+WinClose('ПО ТОТУС-ФРОНТ')
+_FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось изменить тип чека. Тест завершился ошибкой')
+Exit
+	EndIf
+_FileWriteLog(@ScriptDir & $Way, 'Тип чека изменился на доставка ТТ')
+
+;~ Заполнение информации по доставке
+
+WinWaitActive('ЦО Тест')
+WinActivate('ЦО Тест')
+Sleep(1000)
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.SysTabControl32.app.0.378734a; INSTANCE:2]", "^{tab}")
+Sleep(400)
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.SysTabControl32.app.0.378734a; INSTANCE:2]", "^{tab}")
+Sleep(400)
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.SysTabControl32.app.0.378734a; INSTANCE:2]", "^{tab}")
+Sleep(400)
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.SysTabControl32.app.0.378734a; INSTANCE:2]", "^{tab}")
+Sleep(400)
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.SysTabControl32.app.0.378734a; INSTANCE:2]", "^{tab}")
+Sleep(400)
+Local $FIO = "Власов Андрей Николаевич"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:54]", $FIO)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные ФИО: '& $FIO)
+Sleep(400)
+Local $PHONE = "0642508571"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:53]", $PHONE)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные ТЕЛЕФОН: '& $PHONE)
+Sleep(400)
+Local $ADDRESS = "г. Луганск ул. Будённого 59ж"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:52]", $ADDRESS)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные АДРЕС: '& $ADDRESS)
+Sleep(400)
+Local $TIME = "12 00"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:50]", $TIME)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные ВРЕМЯ: '& $TIME)
+Sleep(400)
+Local $COMMENT =  "Доставить в назначенное время"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:51]", $COMMENT)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные КОММЕНТАРИЙ: '& $COMMENT)
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.BUTTON.app.0.378734a; INSTANCE:19]")
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.COMBOBOX.app.0.378734a; INSTANCE:2]")
+send('{down 4}')
+send('{enter}')
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.BUTTON.app.0.378734a; INSTANCE:17]")
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.BUTTON.app.0.378734a; INSTANCE:16]")
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.BUTTON.app.0.378734a; INSTANCE:14]")
+Sleep(400)
+Local $TTN = "87654321"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:49]", $TTN)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные ТТН: '& $TTN)
+Sleep(400)
+Local $PAY = "1000"
+ControlSend("ЦО Тест", "", "[CLASS:WindowsForms10.EDIT.app.0.378734a; INSTANCE:48]", $PAY)
+_FileWriteLog(@ScriptDir & $Way, 'Заполнена данные СУММА: '& $PAY)
+Sleep(400)
+ControlClick("ЦО Тест", "","[CLASS:WindowsForms10.COMBOBOX.app.0.378734a; INSTANCE:1]")
+send('{down}')
+send('{enter}')
+
+
+_FileWriteLog(@ScriptDir & $Way, 'Успешно заполнена информация о доставке')
+
 
 ;~ Пробитие чека.
 
@@ -321,7 +363,6 @@ WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, Закрыть форму чек. Тест завершился ошибкой')
 Exit
 EndIf
-
 _FileWriteLog(@ScriptDir & $Way, 'Закрыта форма чек')
 
 ;~ Открытие чека возврата, последнего пробитого.
@@ -355,6 +396,7 @@ WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, Не удалось открыть форму чека возврата. Тест завершился ошибкой')
 Exit
 EndIf
+
 _FileWriteLog(@ScriptDir & $Way, 'Возврат. Открыт последний пробитый чек')
 
 ;~ Пробитие чека возврата.
@@ -397,7 +439,6 @@ WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, Не удалось открыть форму чека возврата. Тест завершился ошибкой')
 Exit
 EndIf
-
 _FileWriteLog(@ScriptDir & $Way, 'Возврат. Пробит последний пробитый чек')
 
 ;~ Закрытие программы.
