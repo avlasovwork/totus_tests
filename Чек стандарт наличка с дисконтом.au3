@@ -131,11 +131,15 @@ Send('T159874')
 Send('{enter}')
 Sleep(3000)
 
+Func checkMistake()
 if WinActive('Ошибка') <> 0 or WinActive('','Контроль')<> 0 or WinActive('','ОШИБКА:ORA-')<> 0  Then
 WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось добавить диконтную карту. Тест завершился ошибкой')
 Exit
 EndIf
+_FileWriteLog(@ScriptDir & $Way, 'функция отработала')
+EndFunc
+
 if WinActive('','Карточка не найдена') <> 0 Then
 WinClose('ПО ТОТУС-ФРОНТ')
 _FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось найти диконтную карту. Тест завершился ошибкой')
@@ -299,7 +303,7 @@ _FileWriteLog(@ScriptDir & $Way, 'Ошибка, не получилось про
 Exit
 EndIf
 _FileWriteLog(@ScriptDir & $Way,"Пробитие чека наличка")
-
+checkMistake()
 ;~ Закрытие окна чека
 
 Sleep(500)

@@ -248,7 +248,7 @@ MouseClick('primary',1574,835,1,1)
 Sleep(1000)
 MouseClick('primary',1670,194,2,1)
 Sleep(1000)
-Send(200)
+Send(100)
 send('{enter}')
 Sleep(3000)
 
